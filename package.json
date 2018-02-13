@@ -1,0 +1,36 @@
+{
+  "name": "dl-select",
+  "version": "1.0.0",
+  "description": "Filterable select box for AngularJS and Bootstrap",
+  "main": "dl-select.js",
+  "dependencies": {
+    "angular": "^1.6.9",
+    "bootstrap": "^4.0.0",
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doozielabs/dl-select.git"
+  },
+  "keywords": [
+    "selectbox",
+    "select",
+    "angular-select",
+    "angular",
+    "bootstrap-select",
+    "bootstrap",
+    "autocomplete",
+    "filterable-select",
+    "searchable-select"
+  ],
+  "author": "Doozie Labs <letstalk@doozielabs.com> (http://doozielabs.com)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/doozielabs/dl-select/issues"
+  },
+  "homepage": "https://github.com/doozielabs/dl-select#readme"
+}
