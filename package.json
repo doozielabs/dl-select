@@ -1,6 +1,6 @@
 {
   "name": "dl-select",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Filterable select box for AngularJS and Bootstrap",
   "main": "dl-select.js",
   "dependencies": {
