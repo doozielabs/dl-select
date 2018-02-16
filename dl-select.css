@@ -72,7 +72,7 @@ dl-select .dl-select-dropdown li:not(:last-child) {
 }
 
 dl-select .dl-select-dropdown li:hover {
-	background-color: #ccc;
+	background-color: #e9ecef;
 }
 
 dl-select .dl-select-dropdown li.active {
