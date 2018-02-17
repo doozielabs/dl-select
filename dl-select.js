@@ -40,14 +40,14 @@
 				required	: '&ngRequired'
 			},
 			transclude : true,
-			template :	'<button class="form-control" ng-click="toggle()" ng-disabled="disabled()"><span ng-transclude>{{$selected}}</span> <i class="dl-select-dropdown-icon" ng-class="$config.dropdownIconClass"></i></button>' +
+			template :	'<button class="form-control" ng-click="toggle()" ng-disabled="disabled()"><span ng-transclude>{{getOptionText($selected)}}</span> <i class="dl-select-dropdown-icon" ng-class="$config.dropdownIconClass"></i></button>' +
 						'<div class="dl-select-dropdown-container">' +
 							'<div class="dl-select-search-container">' +
 								'<input class="form-control" type="text" ng-model="$search">' +
 								'<i class="dl-select-search-icon" ng-class="$config.searchIconClass"></i>' +
 							'</div>'+
 							'<ul class="dl-select-dropdown">' +
-								'<li ng-if="!$config.templateUrl" ng-repeat="$option in filteredOptions track by $index" ng-class="{ active: isSelected($option) }" ng-click="selectOption($option)" ng-bind-html="$option|dlHighlightSearch:$search"></li>' +
+								'<li ng-if="!$config.templateUrl" ng-repeat="$option in filteredOptions track by $index" ng-class="{ active: isSelected($option) }" ng-click="selectOption($option)" ng-bind-html="getOptionText($option)|dlHighlightSearch:$search"></li>' +
 								'<li ng-if="$config.templateUrl" ng-repeat="$option in filteredOptions track by $index" ng-class="{ active: isSelected($option) }" ng-click="selectOption($option)"><div ng-include="$config.templateUrl"></div></li>' +
 								'<li class="disabled text-center" ng-if="!options.length"><i ng-class="$config.loaderClass"></i></li>' +
 								'<li class="disabled text-center" ng-if="options.length && !filteredOptions.length"><i class="fa fa-warning"></i> No results found for "{{$search}}"</li>' +
@@ -85,6 +85,16 @@
 						return $scope.$selected = option[$scope.$config.selectKey];
 					}
 					$scope.$selected = option;
+				};
+
+				$scope.getOptionText = function(option) {
+					if (_.isObject(option)) {
+						if (_.isString($scope.$config.selectKey) && $scope.getOptionText(option[$scope.$config.selectKey])) {
+							return $scope.getOptionText(option[$scope.$config.selectKey]);
+						}
+						return "";
+					}
+					return option;
 				};
 
 				$scope.isSelected = function(option) {
@@ -204,8 +214,8 @@
 
 	module.filter('dlHighlightSearch', ['$sce', function ($sce) {
 		return function (text, search) {
-			if (!text) { text = ""; }
-			if (!search) {return $sce.trustAsHtml(text); }
+			if (!text || !_.isString(text)) { text = ""; }
+			if (!search || !_.isString(search)) {return $sce.trustAsHtml(text); }
 			return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<b><u>$&</u></b>'));
 		};
 	}]);
