@@ -15,11 +15,11 @@ dl-select > button.form-control {
 	overflow: hidden;
 }
 
-dl-select.open > .form-control {
+dl-select.open > button.form-control {
 	border-radius: 5px 5px 0px 0px;
 }
 
-dl-select > button.form-control .fa {
+dl-select > button.form-control .dl-select-dropdown-icon {
 	position: absolute;
 	height: calc(2.1rem + 2px);
 	right: 5px;
@@ -51,6 +51,20 @@ dl-select.open .dl-select-dropdown-container {
 dl-select .dl-select-search-container {
 	padding: 10px;
 	border-bottom: 1px solid #ced4da
+}
+
+dl-select .dl-select-search-container .form-control {
+	padding-right: 25px;
+}
+
+dl-select .dl-select-search-container .dl-select-search-icon {
+	position: absolute;
+	height: calc(2.1rem + 2px);
+	right: 15px;
+	top: 10px;
+	bottom: 10px;
+	line-height: calc(2.1rem + 2px);
+	vertical-align: middle;
 }
 
 dl-select .dl-select-dropdown {

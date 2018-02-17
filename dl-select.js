@@ -22,8 +22,12 @@
 		};
 
 		var configDefaults = {
-			templateUrl	: null,
-			searchKeys	: null
+			templateUrl			: null,
+			searchKeys			: null,
+			selectKey			: null,
+			dropdownIconClass	: 'fa fa-fw fa-caret-down',
+			searchIconClass		: 'fa fa-fw fa-search',
+			loaderClass			: 'fa fa-fw fa-circle-o-notch fa-spin'
 		};
 
 		return {
@@ -36,22 +40,23 @@
 				required	: '&ngRequired'
 			},
 			transclude : true,
-			template :	'<button class="form-control" ng-click="toggle()" ng-disabled="disabled()"><span ng-transclude>{{$selected}}</span> <i class="fa fa-fw fa-caret-down pull-right"></i></button>' +
+			template :	'<button class="form-control" ng-click="toggle()" ng-disabled="disabled()"><span ng-transclude>{{$selected}}</span> <i class="dl-select-dropdown-icon" ng-class="$config.dropdownIconClass"></i></button>' +
 						'<div class="dl-select-dropdown-container">' +
 							'<div class="dl-select-search-container">' +
 								'<input class="form-control" type="text" ng-model="$search">' +
+								'<i class="dl-select-search-icon" ng-class="$config.searchIconClass"></i>' +
 							'</div>'+
 							'<ul class="dl-select-dropdown">' +
-								'<li ng-if="!config.templateUrl" ng-repeat="$option in filteredOptions track by $index" ng-class="{ active: isSelected($option) }" ng-click="selectOption($option)" ng-bind-html="$option|dlHighlightSearch:$search"></li>' +
-								'<li ng-if="config.templateUrl" ng-repeat="$option in filteredOptions track by $index" ng-class="{ active: isSelected($option) }" ng-click="selectOption($option)"><div ng-include="config.templateUrl"></div></li>' +
-								'<li class="disabled text-center" ng-if="!options.length"><i class="fa fa-warning"></i> Nothing to select</li>' +
+								'<li ng-if="!$config.templateUrl" ng-repeat="$option in filteredOptions track by $index" ng-class="{ active: isSelected($option) }" ng-click="selectOption($option)" ng-bind-html="$option|dlHighlightSearch:$search"></li>' +
+								'<li ng-if="$config.templateUrl" ng-repeat="$option in filteredOptions track by $index" ng-class="{ active: isSelected($option) }" ng-click="selectOption($option)"><div ng-include="$config.templateUrl"></div></li>' +
+								'<li class="disabled text-center" ng-if="!options.length"><i ng-class="$config.loaderClass"></i></li>' +
 								'<li class="disabled text-center" ng-if="options.length && !filteredOptions.length"><i class="fa fa-warning"></i> No results found for "{{$search}}"</li>' +
 							'</ul>' +
 						'</div>' +
 						'<input type="hidden" ng-model="$selected" ng-required="required()">',
 			controller : ['$scope', '$element', '$transclude', function($scope, $element, $transclude) {
 				$scope.$search	= "";
-				$scope.config	= angular.merge(configDefaults, $scope.config);
+				$scope.$config	= _.extend({}, configDefaults, $scope.config);
 				// Toggle selectbox dropdown
 				$scope.toggle = function() {
 					$element.toggleClass('open');
@@ -73,20 +78,33 @@
 					$scope.$search = "";
 				};
 
+				// Open selecbox dropdown
+				$scope.selectOption = function(option) {
+					$element.find('input.form-control').focus();
+					if (_.isString($scope.$config.selectKey) && _.isObject(option)) {
+						return $scope.$selected = option[$scope.$config.selectKey];
+					}
+					$scope.$selected = option;
+				};
+
 				$scope.isSelected = function(option) {
+					if (_.isString($scope.$config.selectKey) && _.isObject(option)) {
+						return _.isMatch($scope.$selected, option[$scope.$config.selectKey]);
+					}
 					return _.isMatch($scope.$selected, option);
 				};
 
-				// Open selecbox dropdown
-				$scope.selectOption = function(option) {
-					$scope.$selected = option;
+				$scope.getSelectedIndex = function() {
+					return _.findIndex($scope.filteredOptions, function(option) {
+						return $scope.isSelected(option);
+					});
 				};
 
 				$scope.filter = function(search) {
 					if (typeof search != "undefined" && $scope.options.length) {
 						var criteria = search;
-						if ($scope.config.searchKeys && $scope.config.searchKeys.length && _.every($scope.options, _.isObject)) {
-							$scope.filteredOptions = _.uniq(_.flatten(_.map($scope.config.searchKeys, function(key) {
+						if ($scope.$config.searchKeys && $scope.$config.searchKeys.length && _.every($scope.options, _.isObject)) {
+							$scope.filteredOptions = _.uniq(_.flatten(_.map($scope.$config.searchKeys, function(key) {
 								var criteria = {};
 								criteria[key] = search;
 								return $filter('filter')($scope.options, criteria);
@@ -94,7 +112,7 @@
 						} else {
 							$scope.filteredOptions = $filter('filter')($scope.options, search);
 						}
-						if ($scope.filteredOptions.length && _.findIndex($scope.filteredOptions, $scope.$selected) == -1) {
+						if ($scope.filteredOptions.length && $scope.getSelectedIndex() == -1) {
 							$scope.selectOption($scope.filteredOptions[0]);
 						}
 					}
@@ -130,7 +148,7 @@
 							break;
 						case KEY.UP:
 							if ($scope.filteredOptions.length) {
-								var index = _.findIndex($scope.filteredOptions, $scope.$selected);
+								var index = $scope.getSelectedIndex();
 								var prevIndex = $scope.filteredOptions.length - 1;
 								if (index > 0) {
 									prevIndex = index - 1;
@@ -140,7 +158,7 @@
 							break;
 						case KEY.DOWN:
 							if ($scope.filteredOptions.length) {
-								var currentIndex = _.findIndex($scope.filteredOptions, $scope.$selected);
+								var currentIndex = $scope.getSelectedIndex();
 								var nextIndex = 0;
 								if (currentIndex < $scope.filteredOptions.length - 1) {
 									nextIndex = currentIndex + 1;
@@ -175,6 +193,10 @@
 					}
 
 					$scope.filter($scope.$search);
+				}, true);
+
+				$scope.$watch('config', function(newConfig, oldConfig) {
+					$scope.$config = _.extend({}, configDefaults, newConfig);
 				}, true);
 			}]
 		};
