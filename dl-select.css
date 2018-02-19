@@ -5,105 +5,139 @@ dl-select {
 	display: inline-block;
 }
 
-dl-select > button.form-control {
-	height: calc(2.1rem + 2px);
-	text-align: left;
-	padding-left: 10px;
-	padding-right: 25px;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
+	dl-select > button.form-control {
+		height: calc(2.1rem + 2px);
+		text-align: left;
+		padding-left: 10px;
+		padding-right: 25px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
+	dl-select.open > button.form-control {
+		border-radius: 5px 5px 0px 0px;
+	}
+
+		dl-select > button.form-control .dl-select-dropdown-icon {
+			position: absolute;
+			height: calc(2.1rem + 2px);
+			right: 5px;
+			top: 0px;
+			line-height: calc(2.1rem + 2px);
+			vertical-align: middle;
+		}
+
+	dl-select .dl-select-dropdown-container {
+		width: 100%;
+		position: absolute;
+		top: 100%;
+		left: 0px;
+		right: 0px;
+		border: 1px solid #ced4da;
+		border-top: none;
+		border-radius: 0px 0px 5px 5px;
+		box-sizing: border-box;
+		z-index: 9999;
+		background-color: #fff;
+		display: none;
+		overflow: hidden;
+	}
+
+	dl-select.open .dl-select-dropdown-container {
+		display: block;
+	}
+
+		dl-select .dl-select-dropdown-container .dl-select-search-container {
+			padding: 10px;
+			border-bottom: 1px solid #ced4da
+		}
+
+			dl-select .dl-select-dropdown-container .dl-select-search-container .form-control {
+				padding-right: 25px;
+			}
+
+			dl-select .dl-select-dropdown-container .dl-select-search-container .dl-select-search-icon {
+				position: absolute;
+				height: calc(2.1rem + 2px);
+				right: 15px;
+				top: 10px;
+				bottom: 10px;
+				line-height: calc(2.1rem + 2px);
+				vertical-align: middle;
+			}
+
+		dl-select .dl-select-dropdown-container .dl-select-dropdown {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+			dl-select .dl-select-dropdown-container .dl-select-dropdown li {
+				list-style: none;
+				padding: 5px 10px;
+				margin: 0;
+				cursor: pointer;
+				font-size: 0.9rem;
+			}
+
+			dl-select .dl-select-dropdown-container .dl-select-dropdown li:not(:last-child) {
+				border-bottom: 1px solid #ced4da;
+			}
+
+			dl-select .dl-select-dropdown-container .dl-select-dropdown li:hover {
+				background-color: #e9ecef;
+			}
+
+			dl-select .dl-select-dropdown-container .dl-select-dropdown li.active {
+				color: #fff;
+				background-color: blue;
+			}
+
+			dl-select .dl-select-dropdown-container .dl-select-dropdown li.disabled {
+				color: #ccc;
+				background-color: #fff;
+				cursor: default;
+			}
+
+			dl-select .dl-select-dropdown-container .dl-select-dropdown li.no-results {
+				background-color: #fff;
+				color: #ccc;
+				font-size: 0.7rem;
+				padding: 10px;
+				cursor: default;
+			}
+
+/***************************************/
+/* Input group support for Bootstrap 4 */
+/***************************************/
+
+.input-group > dl-select {
+	position: relative;
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
+	width: 1%;
+	margin-bottom: 0;
+	z-index: 2;
 }
 
-dl-select.open > button.form-control {
-	border-radius: 5px 5px 0px 0px;
+.input-group > dl-select + dl-select,
+.input-group > dl-select + .form-control,
+.input-group > dl-select + .custom-select,
+.input-group > dl-select + .custom-file,
+.input-group > .form-control + dl-select,
+.input-group > .custom-select + dl-select,
+.input-group > .custom-file + dl-select {
+	margin-left: -1px;
 }
 
-dl-select > button.form-control .dl-select-dropdown-icon {
-	position: absolute;
-	height: calc(2.1rem + 2px);
-	right: 5px;
-	top: 0px;
-	line-height: calc(2.1rem + 2px);
-	vertical-align: middle;
-}
+	.input-group > dl-select:not(:last-child) > button.form-control {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
 
-dl-select .dl-select-dropdown-container {
-	width: 100%;
-	position: absolute;
-	top: 100%;
-	left: 0px;
-	right: 0px;
-	border: 1px solid #ced4da;
-	border-top: none;
-	border-radius: 0px 0px 5px 5px;
-	box-sizing: border-box;
-	z-index: 9999;
-	background-color: #fff;
-	display: none;
-	overflow: hidden;
-}
-
-dl-select.open .dl-select-dropdown-container {
-	display: block;
-}
-
-dl-select .dl-select-search-container {
-	padding: 10px;
-	border-bottom: 1px solid #ced4da
-}
-
-dl-select .dl-select-search-container .form-control {
-	padding-right: 25px;
-}
-
-dl-select .dl-select-search-container .dl-select-search-icon {
-	position: absolute;
-	height: calc(2.1rem + 2px);
-	right: 15px;
-	top: 10px;
-	bottom: 10px;
-	line-height: calc(2.1rem + 2px);
-	vertical-align: middle;
-}
-
-dl-select .dl-select-dropdown {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-dl-select .dl-select-dropdown li {
-	list-style: none;
-	padding: 5px 10px;
-	margin: 0;
-	cursor: pointer;
-	font-size: 0.9rem;
-}
-
-dl-select .dl-select-dropdown li:not(:last-child) {
-	border-bottom: 1px solid #ced4da;
-}
-
-dl-select .dl-select-dropdown li:hover {
-	background-color: #e9ecef;
-}
-
-dl-select .dl-select-dropdown li.active {
-	color: #fff;
-	background-color: blue;
-}
-
-dl-select .dl-select-dropdown li.disabled {
-	color: #ccc;
-	background-color: #fff;
-	cursor: default;
-}
-
-dl-select .dl-select-dropdown li.no-results {
-	background-color: #fff;
-	color: #ccc;
-	font-size: 0.7rem;
-	padding: 10px;
-	cursor: default;
-}
+	.input-group > dl-select:not(:first-child) > button.form-control {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
