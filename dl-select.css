@@ -1,11 +1,13 @@
 dl-select {
-	width: 100%;
 	position: relative;
+	width: 100%;
+	padding: 0px !important;
 	box-sizing: border-box;
 	display: inline-block;
 }
 
 	dl-select > button.form-control {
+		position: relative;
 		height: calc(2.1rem + 2px);
 		text-align: left;
 		padding-left: 10px;
@@ -120,6 +122,10 @@ dl-select {
 	width: 1%;
 	margin-bottom: 0;
 	z-index: 2;
+}
+
+.input-group > dl-select.open {
+	z-index: 3;
 }
 
 .input-group > dl-select + dl-select,
