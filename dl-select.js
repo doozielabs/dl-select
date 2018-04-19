@@ -40,7 +40,7 @@
 				required	: '&ngRequired'
 			},
 			transclude : true,
-			template :	'<button class="form-control" ng-click="toggle()" ng-disabled="disabled()"><span ng-transclude>{{getOptionText($selected)}}</span> <i class="dl-select-dropdown-icon" ng-class="$config.dropdownIconClass"></i></button>' +
+			template :	'<button type="button" class="form-control" ng-click="toggle()" ng-disabled="disabled()"><span ng-transclude>{{getOptionText($selected)}}</span> <i class="dl-select-dropdown-icon" ng-class="$config.dropdownIconClass"></i></button>' +
 						'<div class="dl-select-dropdown-container">' +
 							'<div class="dl-select-search-container">' +
 								'<input class="form-control" type="text" ng-model="$search" autocomplete="off">' +
